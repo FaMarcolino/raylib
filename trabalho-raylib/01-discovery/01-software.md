@@ -1,5 +1,8 @@
 # 1.1 — O que é o raylib?
 
+> **Em palavras simples:** o raylib é uma **biblioteca** (um conjunto de funções prontas) em linguagem C para fazer jogos e programas gráficos. Ela nasceu para **ensinar**: o autor queria que alunos sem experiência vissem algo na tela já na primeira aula. Quem a usa são estudantes, pessoas que fazem jogos pequenos, quem ajuda a melhorar o projeto e quem cria "pontes" (*bindings*) para usá-la em outras linguagens. A licença (zlib) permite usar até em produto comercial.
+> Abaixo estão a **ficha do software**, com a evidência de cada informação, e **4 personas**. Cada persona traz um *JTBD* (*Job to Be Done*, o "trabalho a ser feito"): o que a pessoa quer resolver, no formato "quando [situação], eu quero [ação], para [resultado]".
+
 ## Ficha do software
 
 | Item | Descrição | Evidência |

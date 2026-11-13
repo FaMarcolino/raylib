@@ -1,8 +1,35 @@
 # 4 — UML e compreensão do sistema
 
+## Em palavras simples
+
+**UML** é uma forma padronizada de **desenhar um software** para entendê-lo antes de mexer nele. Fizemos 5 desenhos, e cada um responde a uma pergunta diferente:
+
+| Diagrama | Pergunta que ele responde |
+|---|---|
+| 4.1 Contexto | Quem usa o raylib, e com o que ele conversa para funcionar? |
+| 4.2 Classes | Que "moldes de dados" existem dentro dele? |
+| 4.3 Pacotes | Como o código está dividido em pedaços? |
+| 4.4 Atividades | O que acontece a cada quadro de um jogo? |
+| 4.5 Sequência | Em que ordem as funções são chamadas ao abrir a janela? |
+
+**Um detalhe importante:** o raylib é escrito em **C**, que não tem "classes". Por isso cada `struct` (um molde de dados do C) aparece no diagrama de classes como uma classe.
+
+**Mini-glossário** (para explicar sem tropeçar):
+- **Back-end de plataforma:** a parte do código que fala com o sistema operacional para abrir a janela (GLFW, SDL, Android, Web…). Só um é usado em cada compilação.
+- **CPU e GPU:** o processador comum e a placa de vídeo. Uma `Image` fica na memória do processador, e uma `Texture` fica na placa de vídeo.
+- **Lote (batch):** em vez de mandar cada desenho para a placa de vídeo, o raylib junta vários e manda de uma vez, o que é mais rápido.
+- **Buffer / troca de buffers:** o jogo desenha numa tela "escondida" e, quando termina, troca com a que está visível, para você não ver o desenho pela metade.
+- **Macro:** uma chave do compilador (como `PLATFORM_DESKTOP_GLFW`) que escolhe quais pedaços do código entram no programa.
+
+Cada diagrama abaixo começa com uma explicação em palavras simples, seguida de como lê-lo. Todos estão ligados ao código na tabela final.
+
 ## 4.1 Diagrama de contexto
 
 Mostra o raylib como caixa-preta, seus usuários e os sistemas externos com os quais interage.
+
+**Em palavras simples:** o raylib é a caixa do meio. De um lado ficam as **pessoas** que o usam: quem escreve jogos, quem cria uma "ponte" para outra linguagem (o autor de binding) e quem contribui com o projeto pelo GitHub. Do outro lado ficam as **coisas com que ele conversa** para funcionar: o sistema operacional (que abre a janela), a placa de vídeo, o som e os arquivos. A linha tracejada mostra que as bibliotecas externas já vêm embutidas, então quem usa o raylib não precisa instalar mais nada.
+
+**Como ler:** cada seta diz "quem pede alguma coisa a quem".
 
 ```mermaid
 flowchart LR
@@ -37,6 +64,20 @@ flowchart LR
 ## 4.2 Diagrama de classes
 
 Recorte das **estruturas de dados centrais**: estado global do núcleo, recursos gráficos/modelos/áudio e o lote de renderização do `rlgl`.
+
+**Em palavras simples:** mostra os "moldes de dados" mais importantes do raylib e como eles se encaixam. Eles formam 5 grupos:
+1. **Estado do jogo:** o `CoreData` (a variável global `CORE`) guarda a janela, o teclado, o mouse, o gamepad e o tempo.
+2. **Imagens e texto:** a `Image` fica no processador, a `Texture` fica na placa de vídeo, e a `Font` usa uma textura mais as informações de cada letra (`GlyphInfo`).
+3. **Modelos 3D:** um `Model` tem várias malhas (`Mesh`) e materiais (`Material`).
+4. **Áudio:** `Sound` e `Music` são construídos sobre um `AudioStream`.
+5. **Lote de desenho:** o `rlRenderBatch` junta vários desenhos antes de mandá-los à placa de vídeo.
+
+**Como ler as setas:**
+- losango **cheio** (`*--`): "é composto por", e a parte não existe sem o todo. Ex.: o `CoreData` contém a `Window`.
+- losango **vazio** (`o--`): "tem vários", mas as partes existem sozinhas. Ex.: um `Model` tem vários `Mesh`.
+- seta **tracejada** (`..>`): "vem de" ou "depende de". Ex.: uma `Texture` é criada a partir de uma `Image`.
+
+É um **recorte**, e não o sistema inteiro.
 
 ```mermaid
 classDiagram
@@ -235,6 +276,13 @@ classDiagram
 Módulos de `src/` e dependências por `#include`. Subgrafos representam **pacotes**; setas = "usa/inclui".
 O `rcore.c` escolhe **um** back-end de plataforma por macro (`PLATFORM_*`).
 
+**Em palavras simples:** é um mapa dos arquivos de `src/` e de quem usa quem (cada seta é um `#include`). Três ideias para guardar:
+- O **núcleo** (`rcore.c`) cuida de janela, entrada, tempo e arquivos. Em cada compilação ele escolhe **uma** plataforma (GLFW no computador, SDL, Android, Web…).
+- Os **módulos** de formas, texturas, texto, modelos e áudio são **opcionais**: dá para desligar o que não se usa e deixar o programa menor.
+- As **bibliotecas de terceiros** ficam embutidas na pasta `external/`.
+
+**Como ler:** cada caixa grande é um pacote (um grupo de arquivos), e cada seta diz "este arquivo usa aquele".
+
 ```mermaid
 flowchart TB
     subgraph PUB["«package» API pública"]
@@ -312,25 +360,29 @@ flowchart TB
 
 Fluxo de `BeginDrawing()` → desenho do usuário → `EndDrawing()` (com `SUPPORT_CUSTOM_FRAME_CONTROL = 0`, o padrão).
 
+**Em palavras simples:** é o passo a passo de **um quadro** de um jogo. Um jogo repete isso muitas vezes por segundo: começa o quadro, desenha, mostra na tela, espera o tempo certo, lê o teclado e o mouse, e pergunta "a janela vai fechar?". Se não vai, volta ao começo e faz tudo de novo.
+
+**Como ler:** os retângulos são ações, os losangos são perguntas (com saídas "sim" e "não"), e os círculos são o início e o fim. Os números nos retângulos mostram a ordem principal.
+
 ```mermaid
 flowchart TD
-    start(("início do quadro")) --> bd["BeginDrawing():<br/>mede tempo de update,<br/>zera matriz modelview,<br/>aplica screenScale"]
-    bd --> user["Código do usuário:<br/>DrawText / DrawTexture / DrawRectangle…<br/>(vértices vão para o lote rlgl)"]
-    user --> ed["EndDrawing(): rlDrawRenderBatchActive()<br/>envia o lote à GPU"]
-    ed --> rec{"gravando<br/>automation events?"}
-    rec -->|sim| rae["RecordAutomationEvent()"]
+    start(("início do quadro")) --> bd["1. Começa o quadro: BeginDrawing()<br/>mede o tempo desde o quadro anterior<br/>e prepara a área de desenho"]
+    bd --> user["2. O jogo desenha: DrawText, DrawTexture…<br/>(os desenhos ficam guardados num lote)"]
+    user --> ed["3. Termina o quadro: EndDrawing()<br/>envia o lote de desenhos à placa de vídeo"]
+    ed --> rec{"está gravando<br/>eventos de automação?"}
+    rec -->|sim| rae["grava o evento"]
     rec -->|não| swap
-    rae --> swap["SwapScreenBuffer()<br/>(back buffer → tela)"]
-    swap --> t1["calcula tempo de draw e<br/>frame = update + draw"]
-    t1 --> wait{"frame &lt; target<br/>(SetTargetFPS)?"}
-    wait -->|sim| wt["WaitTime(target − frame)<br/>soma espera ao frame"]
+    rae --> swap["4. Mostra na tela: SwapScreenBuffer()<br/>(troca o desenho de trás pelo da frente)"]
+    swap --> t1["mede quanto tempo o quadro demorou"]
+    t1 --> wait{"o quadro foi mais rápido<br/>que o FPS desejado?"}
+    wait -->|sim| wt["5. Espera o tempo que sobrou: WaitTime()"]
     wait -->|não| poll
-    wt --> poll["PollInputEvents():<br/>lê teclado/mouse/gamepad/janela"]
-    poll --> f12{"F12 pressionada e<br/>SUPPORT_SCREEN_CAPTURE?"}
-    f12 -->|sim| shot["TakeScreenshot(screenshotNNN.png)"]
+    wt --> poll["6. Lê teclado, mouse e gamepad: PollInputEvents()"]
+    poll --> f12{"apertou F12?<br/>(captura de tela ligada)"}
+    f12 -->|sim| shot["salva uma imagem da tela"]
     f12 -->|não| cnt
-    shot --> cnt["frameCounter++"]
-    cnt --> close{"WindowShouldClose()?"}
+    shot --> cnt["conta mais um quadro"]
+    cnt --> close{"a janela vai fechar?<br/>WindowShouldClose()"}
     close -->|não| start
     close -->|sim| fin(("fim do laço → CloseWindow()"))
 ```
@@ -338,6 +390,10 @@ flowchart TD
 ---
 
 ## 4.5 Diagrama de sequência — inicialização da janela e primeiro quadro (back-end GLFW)
+
+**Em palavras simples:** conta, **em ordem**, o que acontece quando o programa chama `InitWindow` e desenha o primeiro quadro. Primeiro o `rcore.c` pede ao back-end (GLFW) uma janela de verdade. Depois prepara o OpenGL (o `rlgl`) e carrega a fonte padrão. Em seguida vem o laço do jogo: desenhar e terminar o quadro, vezes sem conta. No fim, o `CloseWindow` desfaz tudo. É o que acontece por baixo da história de usuário US01 ("abrir uma janela com poucas linhas").
+
+**Como ler:** cada coluna é um "participante" (o programa do usuário, o `rcore.c`, o GLFW…). As setas vão de cima para baixo, na ordem em que acontecem, e dizem "este chama aquele". A caixa `loop` é a parte que se repete.
 
 ```mermaid
 sequenceDiagram

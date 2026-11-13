@@ -1,5 +1,8 @@
 # 7 — Implementação experimental: testes de regressão headless
 
+> **Em palavras simples:** a intervenção é uma **suíte de testes automáticos** para funções do raylib que não dependem de janela: hash (SHA-256, SHA-1, MD5, CRC-32), Base64, caminhos de arquivo e UTF-8. São **120 verificações** que rodam com `make test`.
+> Para saber que os testes **valem de verdade**, fizemos três coisas: os valores esperados vêm de uma fonte independente (o .NET, e não o raylib), quebramos o código de propósito para ver o teste falhar (**teste de mutação**) e rodamos tudo no CI do GitHub. Mais embaixo estão a saída esperada, as provas e o que aconteceu com o PR enviado ao projeto original.
+
 ## O que foi implementado
 
 | Arquivo | Função | Verificações |

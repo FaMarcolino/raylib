@@ -1,5 +1,7 @@
 # ia.md — Registro de uso de Inteligência Artificial
 
+> **Em palavras simples:** este arquivo conta **com honestidade como usamos IA**: qual ferramenta, para quê, o que ela errou e foi descartado, e como conferimos o resto. A regra do trabalho é que **uma resposta de IA não é evidência**: tudo que ela disse foi conferido no próprio projeto (no código, no GitHub) antes de entrar no relatório.
+
 
 ## 1. Ferramenta utilizada
 

@@ -1,5 +1,10 @@
 # 7 — Ética e responsabilidade
 
+> **Em palavras simples:** ética aqui é responder "o que um engenheiro de software **deve fazer** quando o seu código é usado por outras pessoas?". Escolhemos 3 temas, cada um com o **problema** e a **responsabilidade** do engenheiro:
+> 1. **Segurança:** o raylib é a base de muitos jogos e ferramentas, então uma falha nele se espalha para todos que o usam.
+> 2. **Licenciamento:** o raylib embute código de terceiros com licenças diferentes, e cada uma tem obrigações a cumprir.
+> 3. **Acessibilidade:** o raylib não desenha bem textos que se leem da direita para a esquerda, nem emojis, e não tem recursos de acessibilidade, o que deixa algumas pessoas de fora.
+
 ## 1 — Segurança e responsabilidade sobre vulnerabilidades
 
 ### O problema

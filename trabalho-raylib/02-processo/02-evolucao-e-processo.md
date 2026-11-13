@@ -1,5 +1,9 @@
 # 2.2 — Como o raylib evoluiu e como é desenvolvido
 
+> **Em palavras simples:** contamos 5 momentos importantes da história do raylib: (1) o código foi dividido em plataformas, (2) chegou o suporte nativo ao Windows por uma contribuição externa, (3) o projeto mudou de ideia e passou a ter um renderizador por software, (4) uma auditoria de segurança e a correção rápida de um bug no hash SHA-256, e (5) a mesma função (`GetFileExtension`) precisou de duas correções em 3 dias.
+> O projeto é tocado por **um mantenedor central e muita gente da comunidade**, com pedidos pequenos de mudança (PRs), testes de compilação automáticos (CI) e versões com changelog. Comparando com os modelos de processo: parece **incremental e com muito reuso**, e um pouco ágil de forma informal. Não segue Scrum, RUP, cascata nem Spotify.
+> O que **falta**: testes automáticos das funções da biblioteca. É exatamente isso que a nossa evolução propõe.
+
 ## Linha do tempo resumida
 
 | Data | Marco | Fonte |

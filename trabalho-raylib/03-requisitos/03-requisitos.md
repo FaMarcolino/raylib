@@ -1,5 +1,8 @@
 # 3 — Requisitos reconstruídos do raylib 
 
+> **Em palavras simples:** **requisito funcional** é "o que o sistema faz" (ex.: abrir uma janela, ler o teclado). **Requisito não funcional** é "como ele deve se comportar" (ex.: funcionar em vários sistemas, ser rápido, ter licença livre). Nenhum foi inventado: cada um aponta para o **arquivo e a linha** onde dá para conferir.
+> As **histórias de usuário** seguem o formato "Como [quem], quero [o quê], para [por quê]". Cada uma tem **cenários** em "Dado / Quando / Então", que são exemplos de teste escritos em frases. US01 e US02 mostram o que o raylib **já faz**; US03, US04 e US05 mostram o que a **nossa evolução** entrega.
+
 Os requisitos abaixo foram **reconstruídos a partir de artefatos reais** (código, configuração, README, CI). Cada um traz evidência rastreável.
 Convenção: `[L]` arquivo local, `[GH]` GitHub, `[M]` medido/executado por nós.
 

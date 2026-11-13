@@ -1,5 +1,9 @@
 # 5 — A evolução proposta: testes de regressão headless para o núcleo utilitário 
 
+> **Em palavras simples:** o raylib **não tem testes automáticos das suas funções**. Por isso erros em funções simples (como o hash SHA-256 e a extensão de arquivo) só eram descobertos depois que alguém os usava. A nossa proposta é criar **testes que rodam sem abrir janela** (*headless*), com um comando só (`make test`) e também no CI do GitHub.
+> O **MVP** (o mínimo que já tem valor) é: um mini-ajudante de testes (`rtest.h`), 3 arquivos de teste com 120 verificações, um `Makefile` e um workflow de CI. **Não altera o código do raylib** (`src/`), então o risco é baixo.
+> O que aconteceu: implementamos, verificamos (teste de mutação e revisão pelo outro integrante) e enviamos ao projeto original. Em 10/11/2026 o mantenedor **recusou** ("No, thanks."), e o risco de não aceitação já estava previsto na análise.
+
 ## 5.1 Proposta
 
 | Campo | Conteúdo |
