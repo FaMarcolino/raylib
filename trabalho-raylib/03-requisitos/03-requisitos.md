@@ -1,7 +1,7 @@
 # 3 — Requisitos reconstruídos do raylib 
 
-> **Em palavras simples:** **requisito funcional** é "o que o sistema faz" (ex.: abrir uma janela, ler o teclado). **Requisito não funcional** é "como ele deve se comportar" (ex.: funcionar em vários sistemas, ser rápido, ter licença livre). Nenhum foi inventado: cada um aponta para o **arquivo e a linha** onde dá para conferir.
-> As **histórias de usuário** seguem o formato "Como [quem], quero [o quê], para [por quê]". Cada uma tem **cenários** em "Dado / Quando / Então", que são exemplos de teste escritos em frases. US01 e US02 mostram o que o raylib **já faz**; US03, US04 e US05 mostram o que a **nossa evolução** entrega.
+> **Requisito funcional** é o que o sistema faz. **Requisito não funcional** é como ele deve se comportar. Nenhum foi inventado: cada um aponta para o **arquivo e a linha** onde dá para conferir.
+> As histórias de usuário seguem com o formato "Como [quem], quero [o quê], para [por quê]". Cada uma tem **cenários** em "Dado / Quando / Então", que são exemplos de teste escritos em frases. US01 e US02 mostram o que o raylib **já faz**; US03, US04 e US05 mostram o que a nossa evolução entrega.
 
 Os requisitos abaixo foram **reconstruídos a partir de artefatos reais** (código, configuração, README, CI). Cada um traz evidência rastreável.
 Convenção: `[L]` arquivo local, `[GH]` GitHub, `[M]` medido/executado por nós.
@@ -27,8 +27,6 @@ Convenção: `[L]` arquivo local, `[GH]` GitHub, `[M]` medido/executado por nós
 | **RNF05** | **Segurança / robustez** | Entradas externas (URLs, arquivos de eventos, caminhos) devem ser validadas; o código passa por análise estática periódica. | `[L]` CHANGELOG 6.2: auditoria ROS (`CHANGELOG:13`), `OpenURL()` `CLN-002` (`:31`), automação `CLN-005/006` (`:32`); `analyze_codeql.yml` com `cron: '0 0 * * 1'` (semanal); `clang_tidy.yml` |
 | **RNF06** | **Licenciamento** | O projeto deve permitir uso comercial e distribuição, mantendo o aviso de copyright. | `[L]` `LICENSE` (zlib/libpng), `README.md:160` |
 
-> Nota crítica: os RNF acima são verificados por **build (CI), análise estática e *smoke test* dos exemplos** (`tools/rexm`), mas **nenhum é coberto por testes
-> automatizados das funções da biblioteca** (não há `add_test()` no repositório) `[L]`. Este é o elo com a evolução proposta (RNF07 abaixo).
 
 ### Requisito não funcional proposto pela evolução
 
