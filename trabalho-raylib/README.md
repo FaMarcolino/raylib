@@ -4,7 +4,7 @@ Trabalho Prático de **CSI412 – Engenharia de Software I** (UFOP/ICEA/DECSI, 2
 
 | | |
 |---|---|
-| **Integrantes** | `Fabian Givanna Marcolino dos Santos` · `Luan Henrique Pais` |
+| **Integrantes** | `Fabian Giovanna Marcolino dos Santos` · `Luan Henrique Pais` |
 | **Software analisado** | **raylib** — biblioteca C para programação de jogos |
 | **Projeto original** | https://github.com/raysan5/raylib |
 | **Licença do projeto** | zlib/libpng (`LICENSE`) |
@@ -16,13 +16,13 @@ Trabalho Prático de **CSI412 – Engenharia de Software I** (UFOP/ICEA/DECSI, 2
 ## Objetivo do trabalho
 
 Assumir o papel de uma equipe que entra em um projeto existente: compreender o software, seus usuários, requisitos,
-código, processo de desenvolvimento e histórico — e então **justificar tecnicamente e implementar experimentalmente** uma pequena evolução.
+código, processo de desenvolvimento e histórico e justificar tecnicamente e implementar experimentalmente uma pequena evolução.
 
 ## Resumo da proposta de evolução
 
 **Problema (evidência):** o raylib não tem nenhum teste automatizado. O CI (12 workflows) só compila e roda análise estática
-(clang-tidy, CodeQL); nenhum workflow executa testes. Em consequência, bugs em funções puras e simples chegam a usuários e são
-corrigidos depois — por exemplo `ComputeSHA256()` retornando hash errado para mensagens de 56–59 bytes (issue #6143 / PR #6144) e
+(clang-tidy, CodeQL); nenhum workflow executa testes. Em consequência disso, ocorrem bugs em funções puras e simples que chegam a usuários e são
+corrigidos depois, por exemplo `ComputeSHA256()` retornando hash errado para mensagens de 56–59 bytes (issue #6143 / PR #6144) e
 `GetFileExtension()` corrigida duas vezes em 3 dias (PRs #6312 e #6326).
 
 **Proposta:** criar uma suíte de **testes de regressão headless** (sem janela/GPU) para o núcleo utilitário da biblioteca, executável
