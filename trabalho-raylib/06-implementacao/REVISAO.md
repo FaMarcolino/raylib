@@ -11,9 +11,9 @@
 ## Roteiro de revisão
 
 ### A. Ler e entender (sem executar)
-- [ ] O PR toca apenas `tests/` e `.github/workflows/run_tests.yml` (nenhum `src/`)?
+- [x] O PR toca apenas `tests/` e `.github/workflows/run_tests.yml` (nenhum `src/`)?
 - [ ] Cada valor esperado em `test_hash.c` tem origem independente do raylib? (conferir comentário no topo e recalcular 2 valores à mão — ver C.)
-- [ ] `KNOWN_BUG` (se houver) cita issue/PR real? Abrir #6348 e confirmar que foi mesclado (commit `7e626d65`) e que o teste correspondente hoje é `CHECK`, não `KNOWN_BUG`.
+- [x] `KNOWN_BUG` (se houver) cita issue/PR real? Abrir #6348 e confirmar que foi mesclado (commit `7e626d65`) e que o teste correspondente hoje é `CHECK`, não `KNOWN_BUG`.
 - [ ] O código dos testes segue `CONVENTIONS.md` (4 espaços, sem TAB, comentário antes da linha, `float x.xf`)?
 
 ### B. Executar
