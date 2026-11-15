@@ -14,7 +14,7 @@
 
 **Um detalhe importante:** o raylib é escrito em **C**, que não tem "classes". Por isso cada `struct` (um molde de dados do C) aparece no diagrama de classes como uma classe.
 
-**Mini-glossário** (para explicar sem tropeçar):
+**Mini-glossário**
 - **Back-end de plataforma:** a parte do código que fala com o sistema operacional para abrir a janela (GLFW, SDL, Android, Web…). Só um é usado em cada compilação.
 - **CPU e GPU:** o processador comum e a placa de vídeo. Uma `Image` fica na memória do processador, e uma `Texture` fica na placa de vídeo.
 - **Lote (batch):** em vez de mandar cada desenho para a placa de vídeo, o raylib junta vários e manda de uma vez, o que é mais rápido.
