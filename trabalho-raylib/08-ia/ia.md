@@ -74,5 +74,66 @@
 - **Não** executou o CMake. O workflow `run_tests.yml` (CI Linux) rodou no fork: a **1ª execução falhou** no passo "Run tests" (`exit code 2`). A IA não conseguia ler o log (exige login) e levantou a **hipótese** de falta de `libglfw3-dev` (que os workflows oficiais instalam). A dupla colou o log real, que **confirmou**: `/usr/bin/ld: cannot find -lGL` (erro de link, não de teste). Após o ajuste (commit `b83e2d3`) a execução ficou **verde**.
 - **Não** validou a escolha do software com o professor.
 - Em **10/11** a IA **só editou arquivos** locais e leu informações (comandos `git` de leitura e páginas públicas do GitHub). Os comandos que alteram o GitHub — `commit`, `push`, rebase, apagar o repositório `Trabalho-Raylib`, abrir o PR #6400 e fechar o PR #1 — foram **executados pela dupla** no cmd e no navegador. A IA também **não** viu logs que exigem login: dependeu da dupla colá-los.
+
+## 7. Uso de IA na revisão do PR #6400 (feito por luanpais)
+
+> Esta seção registra como eu usei IA para entender e conduzir a revisão. Todos os comandos, o teste de mutação e a postagem do comentário foram feitos por mim.
+
+### 7.1 Ferramenta e sessão
+
+- **Claude** (chat do claude.ai), modelo **Claude Sonnet 5.5**, **sem acesso ao computador nem ao GitHub**. Diferente do Claude Code usado nas seções anteriores, aqui a IA só trabalha com o que o revisor cola na conversa.
+- Sessão de revisão e teste de mutação em **13/11/2026** (data do `libraylib.a` da cópia de mutação).
+
+### 7.2 Objetivos
+
+| # | Objetivo | Onde aparece |
+|---|---|---|
+| 1 | Entender o roteiro de revisão (passos A a E) e o que cada item pede | REVISAO.md |
+| 2 | Conferir o PR #6400: arquivos alterados, origem dos valores de `test_hash.c`, `CHECK` das sequências truncadas, PR #6348, convenções, `run_tests.yml` e Makefile | REVISAO.md A, E |
+| 3 | Executar o teste de mutação numa cópia do repositório e interpretar o resultado | REVISAO.md D |
+| 4 | Redigir o parecer e organizar prints e comentário no PR #1 do fork | REVISAO.md, parecer |
+
+### 7.3 Principais prompts
+
+| Origem | Prompt (resumo fiel) |
+|---|---|
+| Revisor | "não entendi o que deve ser feito" (colando o roteiro de revisão em 4 passos). |
+| Revisor | Colagens e prints: comentário do topo de `test_hash.c`, trecho de `test_utf8.c`, `CONVENTIONS.md`, `Makefile`, `run_tests.yml`, `test_paths.c`, lista de arquivos do PR, página do PR #6348 e telas de Actions, com perguntas como "onde fica esse PR 6348" e "o último está com check". |
+| Revisor | Dúvidas de terminal: "qual comando eu coloco antes para acessar a pasta do repositório" e "não estou entendendo esse acesso à pasta" (com print do MSYS2). |
+| Revisor | "não entendi o da mutação", "como faço" e "o passo 2 não entendi", seguidos das saídas de `grep` e `sed` sobre `rcore.c` e do `mingw32-make`. |
+| Revisor | "separa tudo que eu preciso colocar", "quais prints preciso", "o que colocar nos comentários", "escreva as observações de acordo com o que analisamos" e "o parecer seria qual". |
+| Revisor | "a aba de comentários no pull 1 está closed" e, no fim, colou o texto final do comentário e o `REVISAO.md` pedindo conferência e atualização. |
+
+### 7.4 Resultados utilizados e como foram verificados
+
+| Resultado da IA | Como foi verificado (no próprio software) |
+|---|---|
+| Explicação do roteiro de revisão, passo a passo | O revisor executou cada passo (PowerShell, MSYS2, GitHub). |
+| SHA-256 de `'a'` × 56 "bateu" com `test_hash.c` | Comando rodado pelo revisor no PowerShell; resultado e valor esperado (`b35439a4…6738a`) comparados em blocos de 8 caracteres. **Limite:** o PowerShell usa o .NET, a mesma fonte dos valores do teste. Isso confirma que ninguém digitou o valor errado, mas **não** é uma segunda fonte independente. |
+| Valores esperados de `test_hash.c` vêm de oráculo independente (.NET) | Lido no comentário do topo do arquivo (print do revisor). |
+| `CHECK` no teste de sequências truncadas (linha 41) e PR #6348 mesclado | Linha vista no print de `test_utf8.c`; PR #6348 aberto pelo revisor, com a etiqueta **Merged**. |
+| Desvios de `CONVENTIONS.md` (comentário no fim da linha, comentário terminando com ponto, funções em snake_case) | A IA comparou o texto de `CONVENTIONS.md` colado pelo revisor com `test_utf8.c` e `test_paths.c`. "Sem TAB e sem espaço no fim da linha" confirmado por `grep -nP '\t'` e `grep -nE ' +$'` sobre `*.c *.h` de `tests/` (sem saída). **Não conferido:** `float x.xf` e o estilo de `test_hash.c`. |
+| 29 verificações em `test_paths` no Windows | Contagem da IA no código (5 + 8 + 5 + 2 + 9) coincidiu com a saída real; 65 e 26 conferidos na saída do `make test`. |
+| Lacuna do comprimento 58 nos testes de hash | Lista de comprimentos do comentário de `test_hash.c` e saída do teste (55, 56, 57, 59, 60…). |
+| CI "Run headless tests #6 verde" | Print das execuções; a IA apontou que o último item da página 2 era o mais **antigo**, e o revisor confirmou o #6 na página 1. |
+| Teste de mutação: troca de `sizeof(bitLen)` por `sizeof(dataSize)` no `paddedSize` de `ComputeSHA256` | A IA indicou a linha a partir do corpo da função colado pelo revisor. O revisor trabalhou numa **cópia do repositório inteiro** (`raylib_mut`), recompilou a biblioteca nela e rodou `mingw32-make test`: `test_hash` falhou em 56, 57, 59, 120 e 121 (`65 checks, 5 failed`, `Error 1`). No original, o `grep` mostrou `sizeof(bitLen)` e os testes deram `ALL TEST FILES PASSED` (65 / 29 / 26). |
+| Ausência de `GetFileExtension(NULL)` na suíte | Lido no `test_paths.c` colado pelo revisor; nenhuma execução do CI ficou presa. |
+
+### 7.5 Resultados descartados ou corrigidos
+
+| O que a IA afirmou/fez | Por que foi descartado | Correção |
+|---|---|---|
+| Indicou que a linha do `paddedSize` era a **3569**. | O `grep` do revisor mostrou a linha **3561**. | Corrigido; a alteração foi aplicada com `sed` pelo texto da linha, não pelo número. |
+| Mandou rodar `make test`. | No MSYS2 do revisor `make` não existe (`make: command not found`); só `mingw32-make`. | Comando trocado por `mingw32-make`. |
+| Afirmou que o bug antigo reservava só 4 bytes (`sizeof(dataSize)`). | Foi **dedução a partir do código atual**, sem ver o código antigo do PR #6144. | Tratado como hipótese. As falhas (56, 57, 59, 120, 121) combinam com o intervalo do bug, mas o 58 não está na suíte, então só foi confirmado nos comprimentos testados. |
+| O modelo de parecer trazia a frase "a 1ª tentativa foi inválida (o make gravou a biblioteca fora da cópia)" e resultados já preenchidos. | A IA orientou a **não copiar** o que o revisor não fez. Na execução dele a cópia foi do repositório inteiro e a 1ª tentativa foi válida. | Frase trocada pela descrição do procedimento real. |
+| Estranhou que o PR #1 do fork tivesse 29 arquivos e estivesse Closed, quando o roteiro falava em 7. | Eram PRs diferentes; os 7 arquivos só foram confirmados pelo print da aba Files changed do **#6400**. | Print do #6400 usado como prova do item A. |
+| Relacionou "Checks 0" no #6400 a PR vindo de fork sem CI. | Foi **inferência**. A causa registrada na seção 4 deste arquivo (workflows expirados aguardando aprovação) não foi vista nesta conversa. | Vale o que consta na seção 4; a IA não sabe por que o mantenedor fechou o PR. |
+| As **Observações** do comentário no PR #1 foram **redigidas pela IA** a pedido do revisor. | O roteiro pede que as observações sejam do revisor. | Declarado aqui. `TODO (revisor): reescrever as observações com as próprias palavras e confirmar que consegue explicar cada uma.` |
+
+### 7.6 O que a IA **não** fez nesta revisão
+
+- **Não** executou comandos, não abriu links e não consultou o GitHub: tudo veio dos prints e textos colados. A alteração em `rcore.c`, as compilações, os testes, a postagem do comentário e o `git` foram feitos pelo revisor.
+- **Não** abriu o log da execução #3 do macOS nem o commit `7e626d65` do PR #6348, e não leu o código antigo do PR #6144.
 - Personas são **arquétipos derivados de documentos**, não entrevistas.
 - Os testes foram executados no **Windows/MSYS2** (local) e no **Linux/Ubuntu** (CI do GitHub). **macOS não foi executado.**
