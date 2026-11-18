@@ -31,6 +31,7 @@
 | Dupla (10/11) | "Faça o 5, o 6 e prepare o PR_DESCRIPTION.md atualizado, mas eu quero fazer os comandos do cmd." (a IA edita arquivos; a dupla executa o git). |
 | Dupla (10/11) | "Verifique o que já está feito e o que falta" e, com o PDF do enunciado anexado: "pegue cada ponto e tópico e me indique onde está o trabalho, checando". |
 | Dupla (10/11) | Perguntas de compreensão: "me explique os diagramas", "me explique o que é autor de binding", "onde encontro a licença do fork", "como fechar o PR #1", "o que é necessário na revisão", "sobre as evidências em implementação". |
+| Dupla (13 a 18/11) | "O que falta fazer nesse trabalho?", "me explica o que tem que fazer aqui: 07-etica…" e "o professor pediu para criar um jogo com esse repositório, um jogo fácil"; depois aceitaram a recomendação do Snake e aprovaram o design e o plano (`jogo/DESIGN.md`, `jogo/PLANO.md`). |
 | Dupla | `TODO: colar aqui os prompts adicionais que vocês escreverem (ex.: pedir ajustes, perguntar "por que X?").` |
 
 ## 4. Resultados utilizados (e como foram verificados)
@@ -49,6 +50,7 @@
 | PR ao projeto original: **#6400** | Aberto pela dupla; conferido na página: 8 commits, título e descrição, base `raysan5/raylib:master`. **Desfecho:** o mantenedor o fechou sem mesclar em 10/11/2026 (comentário: "No, thanks.", sem motivo); os workflows do PR expiraram aguardando aprovação ("required approval but was not approved before it expired"). A IA **não** sabe o motivo da recusa. |
 | Diagnóstico da falha do workflow macOS no PR #1 | Log colado pela dupla: "The job was not acquired by Runner of type hosted" (falha de infraestrutura do GitHub); as execuções manuais #4 (`master`) e #5 (`feat/headless-tests`) passaram. |
 | Linhas `arquivo:linha` citadas no relatório | Conferidas na `master` do fork (`git show origin/master:src/rcore.c` etc.): `rcore.c:586`, `:863`, `:2500`, `:3509`, `:3545`, `rtext.c:2437` e `rlgl.h:420` batem; no raylib atual elas já mudaram. |
+| Jogo Snake (`jogo/snake.c`, `Makefile`, `README.md`) escrito pela IA a pedido do professor ("um jogo fácil") | **Compilado** com `-std=c99 -Wall -Wextra` (sem avisos) e **aberto** (ficou rodando). A lógica foi conferida por um teste descartável sem janela (fora do repositório), e quebrar de propósito a regra da direção oposta o fez falhar. A **jogabilidade com teclado não foi testada pela IA**: a dupla deve jogar e conseguir explicar cada função. |
 | Checagem do trabalho contra o enunciado (cada seção → arquivo) | Feita pela IA lendo os arquivos do repositório; a dupla deve reconferir. |
 
 ## 5. Resultados descartados ou corrigidos durante o trabalho
