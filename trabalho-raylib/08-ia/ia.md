@@ -6,7 +6,7 @@
 ## 1. Ferramenta utilizada
 
 - **Claude Code** (extensão do VS Code), modelo **Claude Sonnet 5.5**, com acesso a leitura de arquivos, execução de comandos (PowerShell, gcc/MSYS2, Node) e consulta HTTP a `api.github.com`.
-- Sessões de trabalho em **01/11/2026** (análise, relatório e testes) e **10/11/2026** (migração do relatório para o fork, atualização da branch, PR ao projeto original e checagem do que falta). `TODO: acrescentar outras ferramentas, se a dupla usar.`
+- Sessões de trabalho em **01/11/2026** (análise, relatório e testes) e **10/11/2026** (migração do relatório para o fork, atualização da branch, PR ao projeto original e checagem do que falta). 
 
 ## 2. Objetivos
 
@@ -32,7 +32,6 @@
 | Dupla (10/11) | "Verifique o que já está feito e o que falta" e, com o PDF do enunciado anexado: "pegue cada ponto e tópico e me indique onde está o trabalho, checando". |
 | Dupla (10/11) | Perguntas de compreensão: "me explique os diagramas", "me explique o que é autor de binding", "onde encontro a licença do fork", "como fechar o PR #1", "o que é necessário na revisão", "sobre as evidências em implementação". |
 | Dupla (13 a 18/11) | "O que falta fazer nesse trabalho?", "me explica o que tem que fazer aqui: 07-etica…" e "o professor pediu para criar um jogo com esse repositório, um jogo fácil"; depois aceitaram a recomendação do Snake e aprovaram o design e o plano (`jogo/DESIGN.md`, `jogo/PLANO.md`). |
-| Dupla | `TODO: colar aqui os prompts adicionais que vocês escreverem (ex.: pedir ajustes, perguntar "por que X?").` |
 
 ## 4. Resultados utilizados (e como foram verificados)
 
@@ -131,7 +130,7 @@
 | O modelo de parecer trazia a frase "a 1ª tentativa foi inválida (o make gravou a biblioteca fora da cópia)" e resultados já preenchidos. | A IA orientou a **não copiar** o que o revisor não fez. Na execução dele a cópia foi do repositório inteiro e a 1ª tentativa foi válida. | Frase trocada pela descrição do procedimento real. |
 | Estranhou que o PR #1 do fork tivesse 29 arquivos e estivesse Closed, quando o roteiro falava em 7. | Eram PRs diferentes; os 7 arquivos só foram confirmados pelo print da aba Files changed do **#6400**. | Print do #6400 usado como prova do item A. |
 | Relacionou "Checks 0" no #6400 a PR vindo de fork sem CI. | Foi **inferência**. A causa registrada na seção 4 deste arquivo (workflows expirados aguardando aprovação) não foi vista nesta conversa. | Vale o que consta na seção 4; a IA não sabe por que o mantenedor fechou o PR. |
-| As **Observações** do comentário no PR #1 foram **redigidas pela IA** a pedido do revisor. | O roteiro pede que as observações sejam do revisor. | Declarado aqui. `TODO (revisor): reescrever as observações com as próprias palavras e confirmar que consegue explicar cada uma.` |
+| As **Observações** do comentário no PR #1 foram **redigidas pela IA** a pedido do revisor. | O roteiro pede que as observações sejam do revisor. | Declarado aqui. |
 
 ### 7.6 O que a IA **não** fez nesta revisão
 
