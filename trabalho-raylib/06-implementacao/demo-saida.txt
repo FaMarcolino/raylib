@@ -1,0 +1,35 @@
+﻿=== Demo: testes headless do raylib ===
+Data: 18/11/2026 01:12 | gcc.exe (Rev2, Built by MSYS2 project) 14.2.0
+
+1) Suite completa no raylib ORIGINAL (sem janela, sem GPU)
+  test_hash
+    65 checks, 0 failed, 0 known bugs (XFAIL), 0 fixed known bugs (XPASS)
+  test_paths
+    29 checks, 0 failed, 0 known bugs (XFAIL), 0 fixed known bugs (XPASS)
+  test_utf8
+    26 checks, 0 failed, 0 known bugs (XFAIL), 0 fixed known bugs (XPASS)
+  => ALL TEST FILES PASSED
+
+2) Quebramos o ComputeSHA256 de proposito (so numa COPIA de src/)
+  Mutacao: sizeof(bitLen) -> sizeof(dataSize) na linha do paddedSize (reserva so 4 bytes para o tamanho da mensagem)
+  test_hash contra a biblioteca QUEBRADA:
+    sha256 len=0   ok
+    sha256 len=1   ok
+    sha256 len=3   ok
+    sha256 len=55  ok
+    sha256 len=56  MISMATCH
+    sha256 len=57  MISMATCH
+    sha256 len=59  MISMATCH
+    sha256 len=60  ok
+    sha256 len=63  ok
+    sha256 len=64  ok
+    sha256 len=65  ok
+    sha256 len=119 ok
+    sha256 len=120 MISMATCH
+    sha256 len=121 MISMATCH
+    65 checks, 5 failed, 0 known bugs (XFAIL), 0 fixed known bugs (XPASS)
+  => o teste DETECTOU o bug (codigo de saida diferente de 0)
+
+3) Raylib ORIGINAL de novo (a copia quebrada foi descartada)
+    65 checks, 0 failed, 0 known bugs (XFAIL), 0 fixed known bugs (XPASS)
+  => voltou a passar

@@ -14,7 +14,8 @@
 | [`tests/Makefile`](tests/Makefile) | `make test` (Windows/MSYS2, Linux, macOS) | — |
 | [`ci/run_tests.yml`](ci/run_tests.yml) | Workflow de CI para copiar em `.github/workflows/` do fork | **executado no fork**: 1ª execução falhou, 2ª (com `libglfw3-dev`) verde |
 | [`PR_DESCRIPTION.md`](PR_DESCRIPTION.md) | Texto do Pull Request | — |
-| [`REVISAO.md`](REVISAO.md) | Roteiro/registro da revisão feita pelo outro integrante | **a preencher** |
+| [`REVISAO.md`](REVISAO.md) | Roteiro/registro da revisão feita pelo outro integrante | **concluída — aprovado com ressalvas** |
+| [`demo.ps1`](demo.ps1) · [`demo-saida.txt`](demo-saida.txt) | Demonstração (~15 s): roda os 120 testes, quebra o `ComputeSHA256` numa cópia (os testes falham nos comprimentos 56, 57, 59, 120 e 121) e restaura | **executada em 18/11/2026**; instruções no topo do script |
 
 **O MVP não altera nenhum arquivo de `src/`.**
 

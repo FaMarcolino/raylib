@@ -57,4 +57,4 @@ $b=[byte[]]@(0x61)*56; ([BitConverter]::ToString([Security.Cryptography.SHA256]:
     5. Estilo: comentários no fim da linha, comentários terminando com ponto e funções `static` em `snake_case`. São detalhes pequenos, que não pedem mudança para aprovar.
     6. O comentário `STATUS:` no `run_tests.yml` tende a ficar desatualizado, já que o histórico fica no Git.
     7. Algumas funções têm poucos casos: `GetFileNameWithoutExt` tem só 2 e `IsFileExtension` não testa `NULL`.
-- **Mudanças feitas após a revisão (commits):** `Não foi feita mudanças`
+- **Mudanças feitas após a revisão (commits):** Nenhuma. As ressalvas não bloqueiam a aprovação e ficam registradas como melhorias futuras (comprimento 58, UTF-8 truncado, casos extras).
